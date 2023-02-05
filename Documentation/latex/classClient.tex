@@ -1,0 +1,277 @@
+\hypertarget{classClient}{}\doxysection{Класс Client}
+\label{classClient}\index{Client@{Client}}
+
+
+Класс в котором находятся переменные и функция для подключения клиента к серверу  
+
+
+
+
+{\ttfamily \#include $<$Client.\+h$>$}
+
+\doxysubsection*{Открытые члены}
+\begin{DoxyCompactItemize}
+\item 
+int \mbox{\hyperlink{classClient_ab183c5332141040713518bcf9a8547d8}{connection}} (string ip\+\_\+adr, string portcon, string username, string password, string name\+\_\+original\+\_\+file, string name\+\_\+result\+\_\+file)
+\begin{DoxyCompactList}\small\item\em описания функции подключения клиента к серверу \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Открытые атрибуты}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classClient_a6f4d0b4d4661a8885daba223243be691}\label{classClient_a6f4d0b4d4661a8885daba223243be691}} 
+string {\bfseries name\+\_\+original\+\_\+file}
+\item 
+\mbox{\Hypertarget{classClient_a3c5557510924cf3bb08b9107a1514a5d}\label{classClient_a3c5557510924cf3bb08b9107a1514a5d}} 
+string {\bfseries name\+\_\+result\+\_\+file}
+\item 
+\mbox{\Hypertarget{classClient_ae3f24aea7b5dbfc6b8eb98b1b13db012}\label{classClient_ae3f24aea7b5dbfc6b8eb98b1b13db012}} 
+string {\bfseries name\+\_\+auto\+\_\+file}
+\item 
+\mbox{\Hypertarget{classClient_aaf4f11ae80a7e8563bbdbac87b0687e8}\label{classClient_aaf4f11ae80a7e8563bbdbac87b0687e8}} 
+string {\bfseries username}
+\item 
+\mbox{\Hypertarget{classClient_a051bc8c577ddabaa671c86c31894e0be}\label{classClient_a051bc8c577ddabaa671c86c31894e0be}} 
+string {\bfseries password}
+\item 
+\mbox{\Hypertarget{classClient_a82572f08361ea3291f73e3625da987dd}\label{classClient_a82572f08361ea3291f73e3625da987dd}} 
+string {\bfseries ip\+\_\+adr}
+\item 
+\mbox{\Hypertarget{classClient_a5b01f2cd1423afb4074ce40e02a21677}\label{classClient_a5b01f2cd1423afb4074ce40e02a21677}} 
+int {\bfseries portcon}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Подробное описание}
+Класс в котором находятся переменные и функция для подключения клиента к серверу 
+
+\doxysubsection{Методы}
+\mbox{\Hypertarget{classClient_ab183c5332141040713518bcf9a8547d8}\label{classClient_ab183c5332141040713518bcf9a8547d8}} 
+\index{Client@{Client}!connection@{connection}}
+\index{connection@{connection}!Client@{Client}}
+\doxysubsubsection{\texorpdfstring{connection()}{connection()}}
+{\footnotesize\ttfamily int Client\+::connection (\begin{DoxyParamCaption}\item[{string}]{ip\+\_\+adr,  }\item[{string}]{portcon,  }\item[{string}]{username,  }\item[{string}]{password,  }\item[{string}]{name\+\_\+original\+\_\+file,  }\item[{string}]{name\+\_\+result\+\_\+file }\end{DoxyParamCaption})}
+
+
+
+описания функции подключения клиента к серверу 
+
+подключение клиента к серверу и передача данных 
+\begin{DoxyParams}{Аргументы}
+{\em ip\+\_\+adr} & айпи по которому устанавливается соединение \\
+\hline
+{\em portcon} & порт по которому устанавливается соединение \\
+\hline
+{\em username} & логин клиента \\
+\hline
+{\em password} & пароль клиента \\
+\hline
+{\em name\+\_\+original\+\_\+file} & файл с векторами для передачи серверу на обработку \\
+\hline
+{\em name\+\_\+result\+\_\+file} & файл для записи результатов обработки и отправки сервера клиенту\\
+\hline
+\end{DoxyParams}
+утсановка порта по умолчанию 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{*\textcolor{keywordflow}{if}(portcon == \textcolor{stringliteral}{"{}"{}}) \{}
+\DoxyCodeLine{     portcon = \textcolor{stringliteral}{"{}33333"{}};}
+\DoxyCodeLine{ \}}
+
+\end{DoxyCode}
+ Инициализация айпи 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{*\textcolor{keywordtype}{char}* ip\_chars = \textcolor{keyword}{new} \textcolor{keywordtype}{char}[ip\_adr.length()];}
+\DoxyCodeLine{*ip\_adr.copy(ip\_chars, ip\_adr.length());}
+\DoxyCodeLine{*ip\_chars[ip\_adr.length()] = \textcolor{charliteral}{'\(\backslash\)0'};}
+
+\end{DoxyCode}
+ Инициализируем переменную для порта 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{*\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} portik;}
+\DoxyCodeLine{*portik = stoi(portcon);}
+
+\end{DoxyCode}
+ Создаём структуру с введённым адресом и портом 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{*sockaddr\_in * selfAddr = \textcolor{keyword}{new} (sockaddr\_in);}
+\DoxyCodeLine{*selfAddr-\/>sin\_family = AF\_INET; \textcolor{comment}{// интернет протокол IPv4}}
+\DoxyCodeLine{*selfAddr-\/>sin\_port = 0;}
+\DoxyCodeLine{*selfAddr-\/>sin\_addr.s\_addr = 0;}
+\DoxyCodeLine{ }
+\DoxyCodeLine{ }
+\DoxyCodeLine{*sockaddr\_in * remoteAddr = \textcolor{keyword}{new} (sockaddr\_in);}
+\DoxyCodeLine{*remoteAddr-\/>sin\_family = AF\_INET;     \textcolor{comment}{// интернет протокол IPv4}}
+\DoxyCodeLine{*remoteAddr-\/>sin\_port = htons(portik);}
+\DoxyCodeLine{*remoteAddr-\/>sin\_addr.s\_addr = inet\_addr(ip\_chars); \textcolor{comment}{//  адрес}}
+
+\end{DoxyCode}
+ буфер для передачи и приема данных 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{*\textcolor{keywordtype}{char} *buffer = \textcolor{keyword}{new} \textcolor{keywordtype}{char}[4096];}
+\DoxyCodeLine{*strcpy(buffer,username.c\_str());}
+
+\end{DoxyCode}
+ вычисляем длину строки 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{*\textcolor{keywordtype}{int} msgLen = strlen(buffer);      }
+
+\end{DoxyCode}
+
+
+создаём сокет 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{*\textcolor{keywordtype}{int} mySocket = socket(AF\_INET, SOCK\_STREAM, 0); \textcolor{comment}{//tcp протокол}}
+
+\end{DoxyCode}
+
+
+связываем сокет с адрессом 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{*\textcolor{keywordtype}{int} rc = bind(mySocket,(\textcolor{keyword}{const} sockaddr *) selfAddr, \textcolor{keyword}{sizeof}(sockaddr\_in));}
+
+\end{DoxyCode}
+
+
+установливаем соединение 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{*rc = connect(mySocket, (\textcolor{keyword}{const} sockaddr*) remoteAddr, \textcolor{keyword}{sizeof}(sockaddr\_in));}
+
+\end{DoxyCode}
+
+
+Проверка соединения клиента с сервером 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{*\textcolor{keywordflow}{if} (rc == -\/1) \{}
+\DoxyCodeLine{*cout << \textcolor{stringliteral}{"{}Error: failed connect to server.\(\backslash\)n"{}};}
+\DoxyCodeLine{*close(mySocket);}
+\DoxyCodeLine{*\textcolor{keywordflow}{return} 1;}
+\DoxyCodeLine{ \}}
+\DoxyCodeLine{*\textcolor{keywordflow}{else} cout<<\textcolor{stringliteral}{"{}Connection is succesful"{}}<<endl;}
+
+\end{DoxyCode}
+ Отправка логина серверу 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{*rc = send(mySocket, buffer, msgLen, 0);}
+\DoxyCodeLine{*\textcolor{keywordflow}{if}(rc==-\/1)}
+\DoxyCodeLine{ \{}
+\DoxyCodeLine{      \textcolor{keywordflow}{throw} \mbox{\hyperlink{classerror__client}{error\_client}}(\textcolor{keywordtype}{string}(\textcolor{stringliteral}{"{}Ошибка отправки логина"{}}));}
+\DoxyCodeLine{ \}}
+\DoxyCodeLine{*cout << \textcolor{stringliteral}{"{}Мы отправляем логин: "{}} << buffer << endl;}
+
+\end{DoxyCode}
+
+
+принимаем ответ в буффер 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{*rc = recv(mySocket, buffer, 4096, 0);}
+\DoxyCodeLine{*\textcolor{keywordflow}{if}(rc==-\/1)}
+\DoxyCodeLine{ \{}
+\DoxyCodeLine{      \textcolor{keywordflow}{throw} \mbox{\hyperlink{classerror__client}{error\_client}}(\textcolor{keywordtype}{string}(\textcolor{stringliteral}{"{}Ошибка получения ответа"{}}));}
+\DoxyCodeLine{ \}}
+\DoxyCodeLine{*\textcolor{keywordtype}{string} s1 = string(buffer);}
+\DoxyCodeLine{*buffer[rc] = \textcolor{charliteral}{'\(\backslash\)0'}; \textcolor{comment}{// конец принятой строки}}
+\DoxyCodeLine{ }
+\DoxyCodeLine{*cout << \textcolor{stringliteral}{"{}Мы получаем соль: "{}} << buffer << endl; \textcolor{comment}{// вывод полученного сообщения от сервера}}
+
+\end{DoxyCode}
+
+
+Далее генерируется хэш и отправляется серверу 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{*\textcolor{keywordtype}{string} s2;}
+\DoxyCodeLine{*\textcolor{keywordtype}{string} msg = s1 + password;}
+\DoxyCodeLine{*s2 = MD5\_hash(msg);}
+\DoxyCodeLine{ }
+\DoxyCodeLine{*strcpy(buffer,s2.c\_str());}
+\DoxyCodeLine{*rc = send(mySocket, buffer, s2.length(), 0);}
+\DoxyCodeLine{*cout << \textcolor{stringliteral}{"{}Мы отправляем хэш: "{}} << buffer << endl;}
+
+\end{DoxyCode}
+
+
+Получене ответа об аутентификации 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{*rc = recv(mySocket, buffer, \textcolor{keyword}{sizeof}(buffer), 0);}
+\DoxyCodeLine{*buffer[rc] = \textcolor{charliteral}{'\(\backslash\)0'}; \textcolor{comment}{// конец принятой строки}}
+\DoxyCodeLine{*\textcolor{keywordflow}{if}(rc==-\/1)}
+\DoxyCodeLine{ \{}
+\DoxyCodeLine{      \textcolor{keywordflow}{throw} \mbox{\hyperlink{classerror__client}{error\_client}}(\textcolor{keywordtype}{string}(\textcolor{stringliteral}{"{}Ошибка получения ответа"{}}));}
+\DoxyCodeLine{ \}}
+\DoxyCodeLine{*cout << \textcolor{stringliteral}{"{}Мы получаем ответ: "{}} << buffer << endl; \textcolor{comment}{// вывод полученного сообщения от сервера}}
+
+\end{DoxyCode}
+ Открытие файла для записи результата 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{*ofstream fout(name\_result\_file, ios::binary | ios::out | ios::app);}
+\DoxyCodeLine{*\textcolor{keywordflow}{if}(!fout)}
+\DoxyCodeLine{ \{}
+\DoxyCodeLine{     \textcolor{keywordflow}{throw} \mbox{\hyperlink{classerror__client}{error\_client}}(\textcolor{keywordtype}{string}(\textcolor{stringliteral}{"{}Ошибка открытия файла"{}}));}
+\DoxyCodeLine{ \}}
+\DoxyCodeLine{*endcode}
+\DoxyCodeLine{  Далее открывается файл с векторами для отправки}
+\DoxyCodeLine{  @code}
+\DoxyCodeLine{*uint32\_t n;}
+\DoxyCodeLine{*FILE *f; \textcolor{comment}{//описываем файловую переменную}}
+\DoxyCodeLine{*\textcolor{keyword}{const} \textcolor{keywordtype}{char} * c = name\_original\_file.c\_str(); \textcolor{comment}{//конвертируем строку с названием файла с векторами в const char *}}
+\DoxyCodeLine{*f=fopen(c, \textcolor{stringliteral}{"{}rb"{}});}
+\DoxyCodeLine{*\textcolor{keywordflow}{if}(f==NULL)}
+\DoxyCodeLine{     \{}
+\DoxyCodeLine{         \textcolor{keywordflow}{throw} \mbox{\hyperlink{classerror__client}{error\_client}}(\textcolor{keywordtype}{string}(\textcolor{stringliteral}{"{}Ошибка открытия файла"{}}));}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{  endcode}
+\DoxyCodeLine{*считываем из файла одyо целое число в переменную n которое является количеством векторов}
+\DoxyCodeLine{  @code}
+\DoxyCodeLine{*fread(\&n, \textcolor{keyword}{sizeof}(uint32\_t), 1, f);}
+
+\end{DoxyCode}
+
+
+отправка количества векторов на сервер 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{*rc = send(mySocket, \&n, \textcolor{keyword}{sizeof}(n), 0);}
+
+\end{DoxyCode}
+ cout $<$$<$ \char`\"{}Мы отправляем кол-\/во векторов\+: \char`\"{} $<$$<$ n $<$$<$ endl; // вывод полученного сообщения от сервера fout$<$$<$n$<$$<$endl; далее идёт отправка количество чисел, содержащиеся в векторе 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{*\textcolor{keywordflow}{for}(\textcolor{keywordtype}{int} i=0; i<n; i++)}
+\DoxyCodeLine{ \{}
+\DoxyCodeLine{*uint32\_t size;}
+\DoxyCodeLine{*\textcolor{keywordtype}{double} d;}
+\DoxyCodeLine{     fread(\&size, \textcolor{keyword}{sizeof}(uint32\_t), 1, f);}
+\DoxyCodeLine{     uint32\_t size1;}
+\DoxyCodeLine{     size1=(4+size*\textcolor{keyword}{sizeof}(size));}
+\DoxyCodeLine{     cout<<\textcolor{stringliteral}{"{}Размер  "{}}<<i+1<<\textcolor{stringliteral}{"{}-\/го  вектора  "{}}<<size1<<\textcolor{stringliteral}{"{} байт"{}}<<endl;}
+\DoxyCodeLine{     send(mySocket, \&size, \textcolor{keyword}{sizeof}(size), 0);\textcolor{comment}{//отправка размера вектора}}
+
+\end{DoxyCode}
+ далее отправляются сами векторы массивом на сервер 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\textcolor{keywordtype}{double} array[size]=\{0\};}
+\DoxyCodeLine{cout<<\textcolor{stringliteral}{"{}Векторы в строке  "{}};}
+\DoxyCodeLine{\textcolor{keywordflow}{for}(\textcolor{keywordtype}{int} j=0;j<size;j++)}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{    fread(\&d, \textcolor{keyword}{sizeof}(\textcolor{keywordtype}{double}), 1, f);}
+\DoxyCodeLine{    array[j]=d;                 \textcolor{comment}{//заполнение вектора в массив}}
+\DoxyCodeLine{    cout<<d<<\textcolor{stringliteral}{"{}   "{}};     \textcolor{comment}{//вывод вектора в строке}}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{cout<<endl;}
+\DoxyCodeLine{send(mySocket, \&array, \textcolor{keyword}{sizeof}(array), 0);}
+\DoxyCodeLine{cout << \textcolor{stringliteral}{"{}Мы отправляем сам вектор: "{}} << array << endl; \textcolor{comment}{// вывод полученного сообщения от сервера}}
+\DoxyCodeLine{\textcolor{keywordtype}{double} sum = 0;}
+\DoxyCodeLine{recv(mySocket, \&sum, \textcolor{keyword}{sizeof}(sum), 0);}
+\DoxyCodeLine{cout << \textcolor{stringliteral}{"{}Мы получаем ответ: "{}} << sum << endl; \textcolor{comment}{// вывод полученного сообщения от сервера}}
+\DoxyCodeLine{fout <<sum<< endl;}
+
+\end{DoxyCode}
+ \} После обмена файлами закрываются сокет и файлы 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{*close(mySocket);}
+\DoxyCodeLine{  fout.close();}
+
+\end{DoxyCode}
+ 
+
+return 0;
+
+Объявления и описания членов классов находятся в файлах\+:\begin{DoxyCompactItemize}
+\item 
+Client.\+h\item 
+\mbox{\hyperlink{Client_8cpp}{Client.\+cpp}}\end{DoxyCompactItemize}
