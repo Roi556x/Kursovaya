@@ -1,0 +1,86 @@
+#include <UnitTest++/UnitTest++.h>
+#include "/home/stud/C++Projects/Education/Celldweller/Client.h"
+using namespace std;
+
+/*
+ Для макроса TEST_FIXTURE можно объявить специальный класс, в
+конструкторе которого будут выполняться действия, предваряющие тест, а в
+деструкторе — завершающие.
+*/
+struct Cons_fix {
+    Client * p;
+    Cons_fix()
+    {
+        p = new Client();
+    }
+    ~Cons_fix()
+    {
+        delete p;
+    }
+};
+SUITE(Client_server)
+{
+    //Нормальный тест
+   TEST_FIXTURE(Cons_fix, NormalTest) {
+        p->username = "user";
+        p->password = "P@ssW0rd";
+        p->name_original_file = "vectors.bin";
+        p->name_result_file = "result.bin";
+        p->connection("127.0.0.1", "33333");
+        CHECK(true);
+    }
+ //ошибка введения айпи
+ TEST_FIXTURE(Cons_fix, ErrIp) {
+  p->username = "user";
+        p->password = "P@ssW0rd";
+        p->name_original_file = "vectors.bin";
+        p->name_result_file = "result.bin";
+ CHECK_THROW(p->connection("2215024", "33333"), error_client);
+ }
+ //ошибка введения порта
+ TEST_FIXTURE(Cons_fix, ErrPort) {
+        p->username = "user";
+        p->password = "P@ssW0rd";
+        p->name_original_file = "vectors.bin";
+        p->name_result_file = "result.bin";
+ CHECK_THROW(p->connection("127.0.0.1", "3445"), error_client);
+ }
+ //ошибка введения логина
+ TEST_FIXTURE(Cons_fix, Error_login) {
+        p->username = "usesdfdsffdsr";
+        p->password = "P@ssW0rd";
+        p->name_original_file = "vectors.bin";
+        p->name_result_file = "result.bin";
+ CHECK_THROW(p->connection("127.0.0.1", "33333"), error_client);
+ }
+ //ошибка ввежения пароля
+ TEST_FIXTURE(Cons_fix, Error_Password) {
+        p->username = "user";
+        p->password = "dsfdsfd";
+        p->name_original_file = "vectors.bin";
+        p->name_result_file = "result.bin";
+ CHECK_THROW(p->connection("127.0.0.1", "33333"), error_client);
+ }
+ //ошибка в файле с векторами
+TEST_FIXTURE(Cons_fix, Error_Vector_file) {
+        p->username = "user";
+        p->password = "P@ssW0rd";
+        p->name_original_file = "sadasdd.txt";
+        p->name_result_file = "result.bin";
+ CHECK_THROW(p->connection("127.0.0.1", "33333"), error_client);
+ }
+ //ошибка файла с результатами
+ TEST_FIXTURE(Cons_fix, Error_result_file) {
+        p->username = "user";
+        p->password = "P@ssW0rd";
+        p->name_original_file = "vectors.bin";
+        p->name_result_file = "assaas/rsdsghjas.txt";
+ CHECK_THROW(p->connection("127.0.0.1", "33333"), error_client);
+ }
+ 
+ 
+}
+int main(int argc, char **argv)
+{
+ return UnitTest::RunAllTests();
+}
